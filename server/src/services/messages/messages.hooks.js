@@ -1,11 +1,13 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const processMessages = require('../../hooks/process-messages');
+
 module.exports = {
 	before: {
 		all: [ authenticate('jwt') ],
 		find: [],
 		get: [],
-		create: [],
+		create: [processMessages()],
 		update: [],
 		patch: [],
 		remove: []

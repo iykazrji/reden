@@ -1,10 +1,69 @@
 {
-	"host": "localhost",
-	"port": 3030,
-	"public": "../public/",
-	"paginate": {
-		"default": 10,
-		"max": 50
-	},
-	"mongodb": "mongodb://localhost:27017/reden"
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "mongodb": "mongodb://localhost:27017/reden",
+  "authentication": {
+    "secret": "22f2d639df5d4d918ec5dbf146cde6abd9712c451c104efb79199428ae48098090977c62a430b4af9ef54c2ba47490129de0efeace4923227feff9ac416c562c94a4ab1059b1491db1d27aa5e78107fb3bfc8b647839027f723e695a5b03960545cacac67500705d13f358c0879be951098b65ba00ae39d3cf6e4e2c8300857c4cdb90aa16245474ee81adb8dd7f52e9f8859db5c09d0f20b790b07b183f0fc74b4d612c54dddfa83b890e5c4b2ef3aee42890ef17785db0c3d19f2bd5994a7f17eb629cd3817105198019471d5fc419d5d626418b6265b8a459520c382399fb3c26cee5ad31c9bec4c9fc0e97508c319b978ece9d771a247e0155f57e2dcd89",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "email",
+      "passwordField": "password"
+    },
+    "google": {
+      "clientID": "your google client id",
+      "clientSecret": "your google client secret",
+      "successRedirect": "/",
+      "scope": [
+        "profile openid email"
+      ]
+    },
+    "facebook": {
+      "clientID": "your facebook client id",
+      "clientSecret": "your facebook client secret",
+      "successRedirect": "/",
+      "scope": [
+        "public_profile",
+        "email"
+      ],
+      "profileFields": [
+        "id",
+        "displayName",
+        "first_name",
+        "last_name",
+        "email",
+        "gender",
+        "profileUrl",
+        "birthday",
+        "picture",
+        "permissions"
+      ]
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "feathers-jwt",
+      "httpOnly": false,
+      "secure": false
+    }
+  }
 }

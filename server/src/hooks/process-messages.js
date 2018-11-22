@@ -16,7 +16,7 @@ module.exports = function(options = {}) {
 		const message = data.text.substring(0, 400);
 
 		context.data = {
-			text,
+			text: message,
 			userId: user._id,
 			createdAt: new Date().getTime()
 		};

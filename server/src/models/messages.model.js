@@ -11,8 +11,9 @@ module.exports = function(app) {
 
 	const messages = new Schema(
 		{
-			name: String,
-			text: { type: String, required: true }
+			userId: ObjectID,
+			text: { type: String, required: true },
+			avatar: String
 		},
 		{
 			timestamps: true

@@ -16,7 +16,6 @@ module.exports = (app) => {
 		return function(req, res, next) {
 			if (req.feathers && req.feathers.payload) {
 				const userId = req.feathers.payload.userId;
-				console.log(userId);
 				app.passport
 					.createJWT(req.feathers.payload, options)
 					.then((token) => {

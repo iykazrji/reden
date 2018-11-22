@@ -55,9 +55,13 @@ module.exports = function(app) {
 		},
 		after: {
 			create: [
-				(context) => {
+				async (context) => {
 					// Get the user ID:
 					const user_id = context.params.user._id;
+					const user = await app.service('users').get(user_id);
+					console.log('user is', user);
+					// ... You can pretty much use this user object to run more checks e.g
+					// 1. Manipulate a 'Profiles' Service if not created
 					context.result = { user_id, ...context.result };
 				}
 			]

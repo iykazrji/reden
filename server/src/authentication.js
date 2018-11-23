@@ -18,7 +18,7 @@ module.exports = function(app) {
 	app.configure(local());
 
 	// App object to handler
-	const handler = handlerMiddleWare(app);
+	const makeHandler = handlerMiddleWare(app);
 
 	app.configure(
 		oauth2(
@@ -26,7 +26,7 @@ module.exports = function(app) {
 				{
 					name: 'google',
 					Strategy: GoogleStrategy,
-					handler: handler(config.google.successRedirect)
+					handler: makeHandler(config.google.successRedirect)
 				},
 				config.google
 			)

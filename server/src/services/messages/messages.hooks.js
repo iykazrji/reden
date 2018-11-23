@@ -4,6 +4,8 @@ const processMessages = require('../../hooks/process-messages');
 
 const gravatar = require('../../hooks/gravatar');
 
+const populateUser = require('../../hooks/populate-user');
+
 module.exports = {
 	before: {
 		all: [ authenticate('jwt') ],
@@ -16,7 +18,7 @@ module.exports = {
 	},
 
 	after: {
-		all: [],
+		all: [populateUser()],
 		find: [],
 		get: [],
 		create: [],

@@ -20,6 +20,7 @@ const mongoose = require('./mongoose');
 const authentication = require('./authentication');
 
 const app = express(feathers());
+require('dotenv').config();
 
 // Load app configuration
 app.configure(configuration());

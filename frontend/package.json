@@ -5,6 +5,7 @@
   "dependencies": {
     "@feathersjs/socketio": "^3.2.7",
     "axios": "^0.18.0",
+    "dotenv": "^6.1.0",
     "mobx": "^5.6.0",
     "mobx-react": "^5.4.2",
     "moment": "^2.22.2",

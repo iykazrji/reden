@@ -8,8 +8,11 @@ const FacebookStrategy = require('passport-facebook');
 // Get Oauth Handler Middleware
 // This is very Key as we want a custom redirect for the token...
 const handlerMiddleWare = require('./middleware/oauth-handler');
+
+// Get the necessary hooks...
 const addOnlineTag = require('./hooks/add-online-tag');
 const addUserIdToAuthenticatedUser = require('./hooks/add-user-id-to-authenticated-user');
+const addOfflineTag = require('./hooks/add-offline-tag-to-user');
 
 module.exports = function(app) {
 	const config = app.get('authentication');
@@ -59,7 +62,7 @@ module.exports = function(app) {
 		},
 		after: {
 			create: [ addUserIdToAuthenticatedUser(), addOnlineTag() ],
-			remove: []
+			remove: [ addOfflineTag() ]
 		}
 	});
 };

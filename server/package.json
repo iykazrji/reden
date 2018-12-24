@@ -5,7 +5,6 @@
 	"homepage": "",
 	"main": "src",
 	"keywords": [ "feathers" ],
-	"env": "NODE_ENV",
 	"author": {
 		"name": "Iyk Azorji",
 		"email": "iykazorji@gmail.com"

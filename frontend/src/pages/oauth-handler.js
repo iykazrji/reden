@@ -1,37 +1,48 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+import qs from 'query-string';
+import Styled from 'styled-components';
+
+const Heading = Styled.h3`
+    color: #FFFFFF;
+    border: 1px solid;
+`;
 export default class OauthHandler extends React.Component {
+	state = {
+		isAuthenticated: false
+	};
 	componentDidMount() {
-		const token = getQueryVariable('token');
-		const userId = getQueryVariable('userId');
+		const opener = window.opener;
+		console.log('component did mount running');
+		const parsed = qs.parse(this.props.location.search);
+		console.log(parsed);
+
+		const token = parsed.token || null;
+		const userId = parsed.userId || null;
 
 		if (token) {
 			window.localStorage.setItem('feathers-jwt', token);
+		} else {
+			console.log('Token is not part of the request');
 		}
+
 		if (userId) {
 			window.localStorage.setItem('feathers-userId', userId);
+		} else {
+			console.log('User info not part of the request');
 		}
+
 		if (token || userId) {
-			// Redirect to home route...
-			return <Redirect path={'/'} />;
+			this.setState({
+				isAuthenticated: true
+			});
+			window.close();
+			opener.location.reload();
 		}
 	}
 
 	render() {
-		return <div>Here's the Oauth Handler...</div>;
+		return !this.state.isAuthenticated ? <Heading>Here's the Oauth Handler...</Heading> : <Redirect to="/" />;
 	}
 }
-
-const getQueryVariable = (variable) => {
-	// This script expects and intercepts the provided token and stores it in Localstorage.
-	let query = window.location.search.substring(1);
-	let vars = query.split('&');
-	for (let i = 0; i < vars.length; i++) {
-		let pair = vars[i].split('=');
-		if (decodeURIComponent(pair[0]) == variable) {
-			return decodeURIComponent(pair[1]);
-		}
-	}
-	console.log('Query variable %s not found', variable);
-};

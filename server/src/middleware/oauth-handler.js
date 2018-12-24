@@ -1,6 +1,6 @@
 module.exports = (app) => {
 	// This middleware handles the OAuth redirect in a more stateless way
-	// (I.E Withoud the use of cookies as is the default method Feathers would rather deal
+	// (I.E Without the use of cookies as is the default method Feathers would rather deal
 	//  With authentication.)
 	//  It adds the access token as part of a provieded success redirect URL.
 	//  The script in the Redirect url intercepts the token value, stores it in the browser's

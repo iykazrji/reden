@@ -20,7 +20,7 @@ class App extends Component {
 				<Router>
 					<Fragment>
 						<Route exact path="/" component={Home} />
-						<Route path="/oauth/callback" component={OauthHandler} />
+						<Route path="/oauth/handler" component={OauthHandler} />
 					</Fragment>
 				</Router>
 			</MainApp>

@@ -27,6 +27,8 @@ module.exports = function(app) {
 					name: 'google',
 					Strategy: GoogleStrategy,
 					handler: makeHandler(config.google.successRedirect)
+					// !Important. The handler would ensure that the token is sent to the client
+					// To be intersected and saved in the localstorage?
 				},
 				config.google
 			)

@@ -40,6 +40,19 @@ const openAuthWindow = () => {
 };
 
 export default class Home extends React.Component {
+	state = {
+		isLoggedIn: false
+	};
+	componentDidMount() {
+		const token = window.localStorage.getItem('feathers-jwt');
+
+		this.setState((prevState, props) => {
+			return {
+				isLoggedIn: token ? true : false
+			};
+		});
+	}
+
 	render() {
 		return (
 			<MainApp>
@@ -47,11 +60,10 @@ export default class Home extends React.Component {
 					justifyContent="center"
 					alignItems="center"
 					css={{
-						border: `1px solid`,
 						height: `100%`
 					}}>
 					<Box>
-						<WelcomeText>Welcome to Reden</WelcomeText>
+						<WelcomeText>{`${this.state.isLoggedIn ? `Welcome Back!` : `Welcome to Reden`}`}</WelcomeText>
 						<SignupButton
 							onClick={() => {
 								openAuthWindow();

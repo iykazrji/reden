@@ -9,6 +9,7 @@
     "mobx": "^5.6.0",
     "mobx-react": "^5.4.2",
     "moment": "^2.22.2",
+    "query-string": "^6.2.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",

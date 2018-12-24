@@ -31,7 +31,7 @@
 			"clientID": "2564354527-3q1jb8v90as24vvm6qe15feduhg2kfa5.apps.googleusercontent.com",
 			"clientSecret": "eWaWyfs5tkDfs-6okDxs38Zb",
 			"scope": [ "profile openid email" ],
-			"successRedirect": "CLIENT_URL/oauth/handler"
+			"successRedirect": "http://localhost:3000/oauth/handler"
 		},
 		"facebook": {
 			"clientID": "your facebook client id",

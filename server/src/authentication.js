@@ -8,6 +8,8 @@ const FacebookStrategy = require('passport-facebook');
 // Get Oauth Handler Middleware
 // This is very Key as we want a custom redirect for the token...
 const handlerMiddleWare = require('./middleware/oauth-handler');
+const addOnlineTag = require('./hooks/add-online-tag');
+const addUserIdToAuthenticatedUser = require('./hooks/add-user-id-to-authenticated-user');
 
 module.exports = function(app) {
 	const config = app.get('authentication');
@@ -56,17 +58,8 @@ module.exports = function(app) {
 			remove: [ authentication.hooks.authenticate('jwt') ]
 		},
 		after: {
-			create: [
-				async (context) => {
-					// Get the user ID:
-					const user_id = context.params.user._id;
-					const user = await app.service('users').get(user_id);
-					console.log('user is', user);
-					// ... You can pretty much use this user object to run more checks e.g
-					// 1. Manipulate a 'Profiles' Service if not created
-					context.result = { user_id, ...context.result };
-				}
-			]
+			create: [ addUserIdToAuthenticatedUser(), addOnlineTag() ],
+			remove: []
 		}
 	});
 };

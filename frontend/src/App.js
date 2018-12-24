@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Styled from 'styled-components';
+
 // Get Pages
 import OauthHandler from '../src/pages/oauth-handler';
 import Home from '../src/pages/home';
@@ -18,6 +19,7 @@ class App extends Component {
 	state = {};
 	componentDidMount() {
 		// Try and Authenticate the user
+
 		FeathersClient.authenticate().catch(() => {
 			return this.setState({ login: null });
 		});
@@ -29,6 +31,10 @@ class App extends Component {
 			users.find().then((users) => {
 				console.log(users.data);
 			});
+		});
+
+		FeathersClient.on('logout', () => {
+			console.log('user has logged out');
 		});
 	}
 	render() {

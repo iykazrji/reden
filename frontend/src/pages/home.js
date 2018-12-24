@@ -2,6 +2,7 @@ import React from 'react';
 import Styled from 'styled-components';
 import { Flex, Box } from 'rebass';
 import { Link } from 'react-router-dom';
+import FeathersClient from '../api/feathers';
 
 const MainApp = Styled.div`
     min-height: 100vh;
@@ -80,7 +81,12 @@ export default class Home extends React.Component {
 					<Box>
 						<WelcomeText>{`${isLoggedIn ? `Welcome Back!` : `Welcome to Reden`}`}</WelcomeText>
 						{isLoggedIn ? (
-							<LaunchButton>Launch Reden</LaunchButton>
+							<LaunchButton
+								onClick={() => {
+									FeathersClient.logout({ user_id: window.localStorage.getItem('feathers-userid') });
+								}}>
+								Launch Reden
+							</LaunchButton>
 						) : (
 							<SignupButton
 								onClick={() => {

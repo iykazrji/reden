@@ -17,6 +17,7 @@ const MainApp = Styled.div`
 
 class App extends Component {
 	state = {};
+
 	componentDidMount() {
 		// Try and Authenticate the user
 
@@ -28,6 +29,7 @@ class App extends Component {
 		FeathersClient.on('authenticated', (login) => {
 			console.log('User has been authenticated...');
 			console.log(login);
+
 			users.find().then((users) => {
 				console.log(users.data);
 			});
@@ -37,6 +39,7 @@ class App extends Component {
 			console.log('user has logged out');
 		});
 	}
+
 	render() {
 		return (
 			<MainApp>

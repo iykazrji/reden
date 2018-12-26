@@ -23,6 +23,8 @@ module.exports = function(options = {}) {
 				}
 			})
 		);
+
+		console.log(context.data);
 		context.data.result = resultMessages;
 		return context;
 	};

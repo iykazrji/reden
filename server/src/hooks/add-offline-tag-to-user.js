@@ -13,7 +13,7 @@ module.exports = function(options = {}) {
 
 			// Context.id contains the JWT sent from the client...
 			// Decode the JWT sent from the client and use it to idenfify the
-			// User...
+			// User
 			const decoded = jwt.verify(id, jwtSecret);
 			const user_id = decoded.userId;
 

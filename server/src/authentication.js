@@ -13,6 +13,7 @@ const handlerMiddleWare = require('./middleware/oauth-handler');
 const addOnlineTag = require('./hooks/add-online-tag');
 const addUserIdToAuthenticatedUser = require('./hooks/add-user-id-to-authenticated-user');
 const addOfflineTag = require('./hooks/add-offline-tag-to-user');
+const customizeGoogleProfile = require('./hooks/customize-google-profile');
 
 module.exports = function(app) {
 	const config = app.get('authentication');

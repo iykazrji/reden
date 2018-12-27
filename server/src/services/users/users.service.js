@@ -3,20 +3,21 @@ const createService = require('feathers-mongoose');
 const createModel = require('../../models/users.model');
 const hooks = require('./users.hooks');
 
-module.exports = function (app) {
-  const Model = createModel(app);
-  const paginate = app.get('paginate');
+module.exports = function(app) {
+	const Model = createModel(app);
+	const paginate = app.get('paginate');
 
-  const options = {
-    Model,
-    paginate
-  };
+	const options = {
+		Model,
+		paginate,
+		events: [ 'populate-userlist' ]
+	};
 
-  // Initialize our service with any options it requires
-  app.use('/users', createService(options));
+	// Initialize our service with any options it requires
+	app.use('/users', createService(options));
 
-  // Get our initialized service so that we can register hooks
-  const service = app.service('users');
+	// Get our initialized service so that we can register hooks
+	const service = app.service('users');
 
-  service.hooks(hooks);
+	service.hooks(hooks);
 };

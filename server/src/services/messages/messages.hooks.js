@@ -4,7 +4,7 @@ const processMessages = require('../../hooks/process-messages');
 
 const gravatar = require('../../hooks/gravatar');
 
-const populateUser = require('../../hooks/populate-user');
+const populateMessages = require('../../hooks/populate-messages');
 
 module.exports = {
 	before: {
@@ -18,7 +18,7 @@ module.exports = {
 	},
 
 	after: {
-		all: [],
+		all: [ populateMessages() ],
 		find: [],
 		get: [],
 		create: [],

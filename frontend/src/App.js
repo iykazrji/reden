@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Styled from 'styled-components';
+import { Provider } from 'mobx-react';
 
 // Get Pages
 import OauthHandler from '../src/pages/oauth-handler';
 import Home from '../src/pages/home';
-import FeathersClient from './api/feathers';
+
+import { MessageStore, UserStore } from '../src/stores';
 
 const MainApp = Styled.div`
     min-height: 100vh;
@@ -18,37 +20,17 @@ const MainApp = Styled.div`
 class App extends Component {
 	state = {};
 
-	componentDidMount() {
-		// Try and Authenticate the user
-
-		FeathersClient.authenticate().catch(() => {
-			return this.setState({ login: null });
-		});
-
-		const users = FeathersClient.service('users');
-		FeathersClient.on('authenticated', (login) => {
-			console.log('User has been authenticated...');
-			console.log(login);
-
-			users.find().then((users) => {
-				console.log(users.data);
-			});
-		});
-
-		FeathersClient.on('logout', () => {
-			console.log('user has logged out');
-		});
-	}
-
 	render() {
 		return (
 			<MainApp>
-				<Router>
-					<Fragment>
-						<Route exact path="/" component={Home} />
-						<Route path="/oauth/handler" component={OauthHandler} />
-					</Fragment>
-				</Router>
+				<Provider messageStore={MessageStore} userStore={UserStore}>
+					<Router>
+						<Fragment>
+							<Route exact path="/" component={Home} />
+							<Route path="/oauth/handler" component={OauthHandler} />
+						</Fragment>
+					</Router>
+				</Provider>
 			</MainApp>
 		);
 	}

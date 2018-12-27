@@ -17,7 +17,6 @@ class MessageStore {
 
 		FeathersClient.on('authenticated', (login) => {
 			console.log('User has been authenticated...');
-			console.log(login);
 
 			// Get all Users...
 			messages.find().then((messages) => {

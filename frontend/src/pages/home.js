@@ -3,6 +3,7 @@ import Styled from 'styled-components';
 import { Flex, Box } from 'rebass';
 import { Link } from 'react-router-dom';
 import FeathersClient from '../api/feathers';
+import { inject, observer } from 'mobx-react';
 
 const MainApp = Styled.div`
     min-height: 100vh;
@@ -54,7 +55,7 @@ const openAuthWindow = () => {
 	);
 };
 
-export default class Home extends React.Component {
+class Home extends React.Component {
 	state = {
 		isLoggedIn: false
 	};
@@ -66,7 +67,20 @@ export default class Home extends React.Component {
 				isLoggedIn: token ? true : false
 			};
 		});
+
+		console.log(this.props.userStore.userList);
 	}
+
+	renderUserList = (userList) => {
+		console.log(typeof userList);
+		if (userList) {
+			return userList.map((user) => {
+				return <li>{user._id}</li>;
+			});
+		} else {
+			return null;
+		}
+	};
 
 	render() {
 		const { isLoggedIn } = this.state;
@@ -96,8 +110,13 @@ export default class Home extends React.Component {
 							</SignupButton>
 						)}
 					</Box>
+					<Box>
+						<ul>{this.renderUserList(this.props.userStore.onlineUsersList)}</ul>
+					</Box>
 				</Flex>
 			</MainApp>
 		);
 	}
 }
+
+export default inject('userStore', 'messageStore')(observer(Home));

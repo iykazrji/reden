@@ -26,7 +26,7 @@ const SignupButton = Styled.button`
     border: none;
     box-shadow: 0px 0px 0px rgba(10, 10, 10, 0.08);
 `;
-const LaunchButton = Styled.button`
+const LaunchButton = Styled(Link)`
 	display: block;
     width: 150px;
     background-color: rgba(0,0,0,0);
@@ -38,7 +38,8 @@ const LaunchButton = Styled.button`
     margin: 0 auto;
     cursor: pointer;
 	border: 1px solid #AA3F3C;
-    box-shadow: 0px 0px 0px rgba(10, 10, 10, 0.08);
+	box-shadow: 0px 0px 0px rgba(10, 10, 10, 0.08);
+	text-decoration: none;
 `;
 const WelcomeText = Styled.h3`
     text-align: center;
@@ -95,12 +96,7 @@ class Home extends React.Component {
 					<Box>
 						<WelcomeText>{`${isLoggedIn ? `Welcome Back!` : `Welcome to Reden`}`}</WelcomeText>
 						{isLoggedIn ? (
-							<LaunchButton
-								onClick={() => {
-									FeathersClient.logout({ user_id: window.localStorage.getItem('feathers-userid') });
-								}}>
-								Launch Reden
-							</LaunchButton>
+							<LaunchButton to="/chat">Launch Reden</LaunchButton>
 						) : (
 							<SignupButton
 								onClick={() => {
@@ -109,9 +105,6 @@ class Home extends React.Component {
 								Sign in With Google
 							</SignupButton>
 						)}
-					</Box>
-					<Box>
-						<ul>{this.renderUserList(this.props.userStore.onlineUsersList)}</ul>
 					</Box>
 				</Flex>
 			</MainApp>

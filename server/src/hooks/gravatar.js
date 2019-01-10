@@ -12,7 +12,14 @@ const query = 's=60';
 module.exports = function(options = {}) {
 	return async (context) => {
 		// const { email } = context.data;
-		const id_val = context.data.userId.toString();
+		let id_val = null;
+
+		if (context.data.google.profile) {
+			id_val = context.data.google.profile.id;
+		} else {
+			id_val = context.data.userId.toString();
+		}
+
 		//  Create Hash for Gravatar to use to create the images...
 		const hash = crypto.createHash('md5').update(id_val).digest('hex');
 

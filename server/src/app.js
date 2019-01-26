@@ -19,6 +19,8 @@ const mongoose = require('./mongoose');
 
 const authentication = require('./authentication');
 
+const mongodb = require('./mongodb');
+
 const app = express(feathers());
 require('dotenv').config();
 
@@ -43,6 +45,8 @@ app.configure(express.rest());
 app.configure(socketio());
 
 app.configure(mongoose);
+
+app.configure(mongodb);
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);

@@ -1,21 +1,22 @@
 // Initializes the `rooms` service on path `/rooms`
-const createService = require('feathers-mongodb');
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/rooms.model');
 const hooks = require('./rooms.hooks');
 
 module.exports = function (app) {
+  const Model = createModel(app);
   const paginate = app.get('paginate');
-  const mongoClient = app.get('mongoClient');
-  const options = { paginate };
+
+  const options = {
+    Model,
+    paginate
+  };
 
   // Initialize our service with any options it requires
   app.use('/rooms', createService(options));
 
-  // Get our initialized service so that we can register hooks and filters
+  // Get our initialized service so that we can register hooks
   const service = app.service('rooms');
-
-  mongoClient.then(db => {
-    service.Model = db.collection('rooms');
-  });
 
   service.hooks(hooks);
 };

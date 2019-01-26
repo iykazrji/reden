@@ -13,7 +13,9 @@ module.exports = function(app) {
 		{
 			userId: ObjectID,
 			text: { type: String, required: true },
-			avatar: String
+			avatar: String,
+			recepientId: ObjectID,
+			roomId: ObjectID
 		},
 		{
 			timestamps: true

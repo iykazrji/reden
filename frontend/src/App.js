@@ -7,6 +7,7 @@ import { Provider } from 'mobx-react';
 import OauthHandler from '../src/pages/oauth-handler';
 import Home from '../src/pages/home';
 import ChatPage from '../src/pages/chat';
+import AuthPage from '../src/pages/chat';
 
 import { MessageStore, UserStore } from '../src/stores';
 
@@ -29,7 +30,7 @@ class App extends Component {
 						<Fragment>
 							<Route exact path="/" component={Home} />
 							<Route path="/oauth/handler" component={OauthHandler} />
-							<Route path="/chat" component={ChatPage} />
+							<Route path="/chat" component={() => <AuthPage page={ChatPage} />} />
 						</Fragment>
 					</Router>
 				</Provider>

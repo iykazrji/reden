@@ -4,6 +4,7 @@ import FeathersClient from '../api/feathers';
 class UserStore {
 	userList = [];
 	currentUserId = null;
+	currentUser = {};
 
 	setUserList = (userData) => {
 		this.userList = userData;
@@ -27,6 +28,15 @@ class UserStore {
 	constructor() {
 		FeathersClient.authenticate().catch((err) => {
 			console.log('Error in authentication: ', err);
+			if (localStorage.getItem('feathers-jwt')) {
+				console.log('Not Authenticated but user token is set in local storeage');
+				// Remove feathers-jwt from local storage
+				localStorage.removeItem('feathers-jwt');
+				if (localStorage.getItem('feathers-userId')) {
+					// Remove the UserId from the localstorage...
+					localStorage.removeItem('feathers-userId');
+				}
+			}
 		});
 
 		const users = FeathersClient.service('users');
@@ -34,6 +44,7 @@ class UserStore {
 		FeathersClient.on('authenticated', (login) => {
 			console.log('User has been authenticated...');
 
+			console.log(login);
 			// Get all Users...
 			users.find().then((users) => {
 				this.setUserList(users.data);

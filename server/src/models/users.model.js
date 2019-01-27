@@ -10,7 +10,8 @@ module.exports = function(app) {
 			password: { type: String },
 			googleId: { type: String },
 			facebookId: { type: String },
-			online: { type: Boolean }
+			online: { type: Boolean },
+			avatar: { type: String }
 		},
 		{
 			timestamps: true

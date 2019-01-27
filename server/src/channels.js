@@ -3,7 +3,7 @@ module.exports = function(app) {
 
 	// Helper function to make user join channels
 	const joinChannels = (user, connection) => {
-		let id = user._id;
+		let id = connection.user._id;
 
 		// Add User to the Authenticated Channel
 		app.channel('authenticated').join(connection);
@@ -32,13 +32,23 @@ module.exports = function(app) {
 
 	// Get a user to leave all channels
 	const leaveChannels = (user) => {
-		app.channel(app.channels).leave((connection) => connection.user._id === user._id);
+		app.channel(app.channels).leave((connection) => {
+			if (connection.user) {
+				return connection.user._id === user._id;
+			}
+		});
 	};
 
 	// Leave and re-join all channels with new user information
 	const updateChannels = (user) => {
+		console.log('Update Channels Argument: ', user);
 		// Find all connections for this user
-		const { connections } = app.channel(app.channels).filter((connection) => connection.user._id === user._id);
+		const { connections } = app.channel(app.channels).filter((connection) => {
+			console.log('Connection User: ', connection);
+			if (connection.user) {
+				return connection.user._id === user._id;
+			}
+		});
 		// Leave all channels
 		leaveChannels(user);
 
@@ -67,17 +77,17 @@ module.exports = function(app) {
 			// The connection is no longer anonymous, remove it
 			app.channel('anonymous').leave(connection);
 		}
-
-		// Update the User's channels subscription when the user is Patched / Updated / Removed...
-		app.service('users').on('updated', updateChannels);
-		app.service('users').on('patched', updateChannels);
-		app.service('users').on('removed', leaveChannels);
-
-		// Update the User's channels subscription when an activity on the rooms has occured...
-		app.service('rooms').on('updated', updateChannels);
-		app.service('rooms').on('patched', updateChannels);
-		app.service('rooms').on('created', updateChannels);
 	});
+
+	// Update the User's channels subscription when the user is Patched / Updated / Removed...
+	app.service('users').on('updated', updateChannels);
+	app.service('users').on('patched', updateChannels);
+	app.service('users').on('removed', leaveChannels);
+
+	// Update the User's channels subscription when an activity on the rooms has occured...
+	app.service('rooms').on('updated', updateChannels);
+	app.service('rooms').on('patched', updateChannels);
+	app.service('rooms').on('created', updateChannels);
 
 	// eslint-disable-next-line no-unused-vars
 	app.publish((data, hook) => {

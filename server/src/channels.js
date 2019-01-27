@@ -26,6 +26,8 @@ module.exports = function(app) {
 
 		// Create Personalized Channel for the user...
 		app.channel(`userIds/${user._id.toString()}`).join(connection);
+
+		// Now we have added the user to the Authenticated, Users and Rooms channels...
 	};
 
 	// Get a user to leave all channels
@@ -64,58 +66,24 @@ module.exports = function(app) {
 
 			// The connection is no longer anonymous, remove it
 			app.channel('anonymous').leave(connection);
-
-			// Add it to the authenticated user channel
-			app.channel('authenticated').join(connection);
-
-			// Channels can be named anything and joined on any condition
-
-			// E.g. to send real-time events only to admins use
-			// if(user.isAdmin) { app.channel('admins').join(connection); }
-
-			// If the user has joined e.g. chat rooms
-			// if(Array.isArray(user.rooms)) user.rooms.forEach(room => app.channel(`rooms/${room.id}`).join(channel));
-
-			// Easily organize users by email and userid for things like messaging
-			// app.channel(`emails/${user.email}`).join(channel);
-			// app.channel(`userIds/$(user.id}`).join(channel);
-			// ----------------------------------------------------------------------------------------------- //
-			// When a user logs in, Subscribe them to what ever room the have joined
-			const id = user._id;
-
-			// Get all rooms the user is a part of and add that user to the channel...
-			app.service('rooms').find().then((res) => {
-				// Res contains all Rooms
-				console.log(res);
-				let rooms = res.data.filter((room) => {
-					return _.includes(room.members.toString(), id.toString());
-				});
-
-				if (rooms) {
-					// Now add the User to all the channels he's a part of...
-					rooms.map((room) => {
-						app.channel(`rooms/${room._id.toString()}`).join(connection);
-					});
-				}
-			});
-
-			// Create Personalized Channel for the user...
-			app.channel(`userIds/${user._id.toString()}`).join(connection);
 		}
-	});
 
-	app.service('users').on('updated', updateChannels);
-	app.service('users').on('patched', updateChannels);
-	app.service('users').on('removed', leaveChannels);
+		// Update the User's channels subscription when the user is Patched / Updated / Removed...
+		app.service('users').on('updated', updateChannels);
+		app.service('users').on('patched', updateChannels);
+		app.service('users').on('removed', leaveChannels);
+
+		// Update the User's channels subscription when an activity on the rooms has occured...
+		app.service('rooms').on('updated', updateChannels);
+		app.service('rooms').on('patched', updateChannels);
+		app.service('rooms').on('created', updateChannels);
+	});
 
 	// eslint-disable-next-line no-unused-vars
 	app.publish((data, hook) => {
-		// Here you can add event publishers to channels set up in `channels.js`
-		// To publish only for a specific event use `app.publish(eventname, () => {})`
-
 		console.log(
 			'Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.'
-		); // eslint-disable-line
+		);
 		console.log('Channels:', app.channels);
 		// e.g. to publish all service events to all authenticated users use
 		return app.channel('authenticated');
@@ -129,21 +97,4 @@ module.exports = function(app) {
 			data.roomId ? app.channel('rooms/${data.roomId}') : null
 		];
 	});
-
-	app.service('rooms').publish('created', (data, context) => {
-		return [ app.channel(`room/${context.result._id}`) ];
-	});
-
-	// Here you can also add service specific event publishers
-	// e.g. the publish the `users` service `created` event to the `admins` channel
-	// app.service('users').publish('created', () => app.channel('admins'));
-
-	// With the userid and email organization from above you can easily select involved users
-	// app.service('messages').publish(() => {
-	//   return [
-	//     app.channel(`userIds/${data.createdBy}`),
-	//     app.channel(`emails/${data.recipientEmail}`)
-	//   ];
-	// });
-	// app.services('messages').publish((data, context) => []);
 };

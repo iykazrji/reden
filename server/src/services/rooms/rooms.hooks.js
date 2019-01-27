@@ -1,15 +1,17 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-const updateRoomCreatedAt = require('../../hooks/update-room-created-at');
+const verifyRoomAuthor = require('../../hooks/verify-room-author');
+
+const addMemberToRoom = require('../../hooks/add-member-to-room');
 
 module.exports = {
 	before: {
 		all: [],
 		find: [],
 		get: [],
-		create: [updateRoomCreatedAt()],
-		update: [updateRoomCreatedAt()],
-		patch: [],
+		create: [ verifyRoomAuthor(), addMemberToRoom() ],
+		update: [ verifyRoomAuthor(), addMemberToRoom() ],
+		patch: [ addMemberToRoom() ],
 		remove: []
 	},
 

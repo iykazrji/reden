@@ -46,6 +46,7 @@
 		"feathers-versionate": "^0.2.2",
 		"helmet": "^3.15.0",
 		"jsonwebtoken": "^8.4.0",
+		"lodash": "^4.17.11",
 		"mongodb": "^3.1.8",
 		"mongodb-core": "^3.1.7",
 		"mongoose": "^5.3.7",

@@ -12,7 +12,7 @@ module.exports = function(app) {
 	const { Schema } = mongooseClient;
 	const rooms = new Schema(
 		{
-			users: [ { type: ObjectId, ref: 'Users' } ],
+			members: [ { type: ObjectId, ref: 'Users' } ],
 			roomname: { type: String, unique: true, sparse: true },
 			createdBy: { type: ObjectId, ref: 'Users', default: null }
 		},
